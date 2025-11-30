@@ -3,44 +3,33 @@ import type { TMDBResponse } from "@/types/movie";
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
-export const tmdbApi = {
-  // Get popular movies
-  getPopularMovies: async (page: number = 1): Promise<TMDBResponse> => {
-    const response = await fetch(
-      `${BASE_URL}/movie/popular?api_key=${API_KEY}&page=${page}`
-    );
-    if (!response.ok) {
-      throw new Error("Failed to fetch popular movies");
-    }
-    return response.json();
-  },
+if (!API_KEY) {
+  console.error(
+    "TMDB API key is not configured. Please add VITE_TMDB_API_KEY to your .env file"
+  );
+}
 
-  // Search movies
-  searchMovies: async (
+export const tmdbApi = {
+  async searchMovies(
     query: string,
-    page: number = 1
-  ): Promise<TMDBResponse> => {
+    signal?: AbortSignal
+  ): Promise<TMDBResponse> {
+    if (!API_KEY) {
+      throw new Error("TMDB API key is not configured");
+    }
+
     const response = await fetch(
       `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(
         query
-      )}&page=${page}`
+      )}`,
+      { signal }
     );
-    if (!response.ok) {
-      throw new Error("Failed to search movies");
-    }
-    return response.json();
-  },
 
-  // Get trending movies
-  getTrendingMovies: async (
-    timeWindow: "day" | "week" = "week"
-  ): Promise<TMDBResponse> => {
-    const response = await fetch(
-      `${BASE_URL}/trending/movie/${timeWindow}?api_key=${API_KEY}`
-    );
     if (!response.ok) {
-      throw new Error("Failed to fetch trending movies");
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.status_message || "Failed to search movies");
     }
+
     return response.json();
   },
 };
