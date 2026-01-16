@@ -1,101 +1,80 @@
-import { useState, useEffect } from 'react'
-import type { Movie } from '@/types/movie'
-import { tmdbApi } from '@/services/tmdb'
-import MovieCard from '@/components/MovieCard'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { useState, useCallback } from "react";
+import type { Movie } from "@/types/movie";
+import type { ScheduleEntry } from "@/types/schedule";
+import MovieSearch from "@/components/MovieSearch";
+import Schedule from "@/components/Schedule";
+import { movieToScheduleEntry } from "@/lib/movieUtils";
+import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner";
 
 function App() {
-  const [movies, setMovies] = useState<Movie[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [searchQuery, setSearchQuery] = useState('')
+  const [schedule, setSchedule] = useState<ScheduleEntry[]>([]);
 
-  useEffect(() => {
-    fetchPopularMovies()
-  }, [])
+  const handleAddToSchedule = useCallback((movie: Movie) => {
+    let movieInSchedule = false;
 
-  const fetchPopularMovies = async () => {
-    try {
-      setLoading(true)
-      setError(null)
-      const data = await tmdbApi.getPopularMovies()
-      setMovies(data.results)
-    } catch (err) {
-      setError('Failed to fetch movies. Please check your API key.')
-      console.error(err)
-    } finally {
-      setLoading(false)
+    setSchedule((prev) => {
+      const alreadyWatched = prev.some((entry) => entry.tmdbId === movie.id);
+
+      if (alreadyWatched) {
+        return prev;
+      }
+
+      movieInSchedule = true;
+      return [...prev, movieToScheduleEntry(movie, prev.length + 1)];
+    });
+
+    // Toast outside setState to prevent duplicate notifications
+    if (movieInSchedule) {
+      toast.success(`Added "${movie.title}" to schedule!`);
+    } else {
+      toast.warning("This movie is already in your schedule!");
     }
-  }
+  }, []);
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!searchQuery.trim()) {
-      fetchPopularMovies()
-      return
-    }
-
-    try {
-      setLoading(true)
-      setError(null)
-      const data = await tmdbApi.searchMovies(searchQuery)
-      setMovies(data.results)
-    } catch (err) {
-      setError('Failed to search movies.')
-      console.error(err)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const handleRemoveFromSchedule = useCallback((tmdbId: number) => {
+    setSchedule((prev) =>
+      prev
+        .filter((entry) => entry.tmdbId !== tmdbId)
+        .map((entry, index) => ({ ...entry, order: index + 1 }))
+    );
+  }, []);
 
   return (
-    <div className="app">
-      <header className="app-header">
-        <h1>🎬 Movie Club Queue</h1>
-        <form onSubmit={handleSearch} className="search-form">
-          <Input
-            type="text"
-            placeholder="Search for movies..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="search-input"
-          />
-          <Button type="submit">Search</Button>
-          {searchQuery && (
-            <Button 
-              type="button" 
-              variant="secondary"
-              onClick={() => {
-                setSearchQuery('')
-                fetchPopularMovies()
-              }}
-            >
-              Clear
-            </Button>
-          )}
-        </form>
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 flex flex-col">
+      <Toaster />
+
+      <header className="py-12 max-w-4xl mx-auto px-6 text-center">
+        <h1 className="text-4xl font-bold text-white mb-2">
+          Movie Club Schedule
+        </h1>
       </header>
 
-      <main className="app-main">
-        {error && <div className="error-message">{error}</div>}
-        
-        {loading ? (
-          <div className="loading">Loading movies...</div>
-        ) : (
-          <div className="movies-grid">
-            {movies.length > 0 ? (
-              movies.map((movie) => (
-                <MovieCard key={movie.id} movie={movie} />
-              ))
-            ) : (
-              <div className="no-results">No movies found.</div>
-            )}
-          </div>
-        )}
+      <main className="flex-1 flex flex-col items-center px-6 pb-12">
+        <div className="w-full max-w-3xl space-y-12">
+          <MovieSearch onAddToSchedule={handleAddToSchedule} />
+
+          {schedule.length > 0 && (
+            <section className="bg-gray-900/60 backdrop-blur-sm rounded-2xl border border-gray-800 p-8 shadow-2xl">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-semibold text-white">
+                  Upcoming Schedule
+                </h2>
+                <span className="text-sm text-gray-400 bg-gray-800/80 px-4 py-2 rounded-full border border-gray-700">
+                  {schedule.length} {schedule.length === 1 ? "movie" : "movies"}
+                </span>
+              </div>
+              <Schedule
+                schedule={schedule}
+                onRemove={handleRemoveFromSchedule}
+                onReorder={setSchedule}
+              />
+            </section>
+          )}
+        </div>
       </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
