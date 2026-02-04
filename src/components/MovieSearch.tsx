@@ -129,13 +129,11 @@ export default function MovieSearch({ onAddToSchedule }: MovieSearchProps) {
           )}
         </div>
 
-        {searchQuery && (
+        {(movies.length > 0 || showEmptyMessage) && (
           <CommandList className="mt-3 bg-gray-800 border border-gray-700/50 rounded-2xl shadow-2xl max-h-96 overflow-y-auto will-change-scroll [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
-            {(loading || showEmptyMessage) && (
+            {showEmptyMessage && movies.length === 0 && (
               <CommandEmpty className="py-6 text-center text-gray-400 text-base">
-                {loading
-                  ? "Searching..."
-                  : "No movies found. Try a different search."}
+                No movies found. Try a different search.
               </CommandEmpty>
             )}
             {movies.length > 0 && (
