@@ -107,7 +107,7 @@ export default function Schedule({
   if (schedule.length === 0) {
     return (
       <Card className="text-center py-12 text-gray-400 bg-gray-800/30 border-2 border-dashed border-gray-700">
-        <p className="text-lg mb-2">📅 No movies scheduled</p>
+        <p className="text-lg mb-2">No movies scheduled</p>
         <p className="text-sm">Search and add movies to your schedule</p>
       </Card>
     );

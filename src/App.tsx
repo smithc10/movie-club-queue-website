@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import { ExitIcon } from "@radix-ui/react-icons";
 
 function App() {
-  const { isLoggedIn, user, logout } = useAuthContext();
+  const { isLoggedIn, user, isLoading, handleLogout } = useAuthContext();
   const [schedule, setSchedule] = useState<ScheduleEntry[]>([]);
 
   const handleAddToSchedule = useCallback((movie: Movie) => {
@@ -45,6 +45,14 @@ function App() {
     );
   }, []);
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 flex items-center justify-center">
+        <div className="text-gray-400 text-lg">Loading...</div>
+      </div>
+    );
+  }
+
   if (!isLoggedIn) {
     return (
       <>
@@ -66,7 +74,7 @@ function App() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={logout}
+              onClick={handleLogout}
               className="text-gray-400 hover:text-white"
             >
               <ExitIcon className="h-4 w-4 mr-2" />
