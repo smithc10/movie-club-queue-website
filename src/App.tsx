@@ -37,14 +37,6 @@ function App() {
     }
   }, []);
 
-  const onLogout = useCallback(async () => {
-    try {
-      await handleLogout();
-    } catch {
-      toast.error("Failed to sign out. Please try again.");
-    }
-  }, [handleLogout]);
-
   const handleRemoveFromSchedule = useCallback((tmdbId: number) => {
     setSchedule((prev) =>
       prev

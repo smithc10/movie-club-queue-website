@@ -77,6 +77,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const result = await signIn({ username: email, password });
       if (result.isSignedIn) {
         setUser({ email });
+        toast.success("Welcome back!");
       } else {
         const step = result.nextStep.signInStep;
         if (step === "CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED") {
@@ -84,13 +85,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
           setNeedsNewPassword(true);
         } else if (step === "CONFIRM_SIGN_UP") {
           setError("Please verify your email address before signing in.");
-        } else if (step === "DONE") {
-          setUser({ email });
         } else {
           setError(`Additional sign-in step required: ${step}`);
         }
       }
     } catch (err) {
+      // confirmResetPassword can implicitly create a Cognito session; if signIn
+      // fires while that session is active, recover instead of showing an error.
+      if (err instanceof Error && err.name === "UserAlreadyAuthenticatedException") {
+        try {
+          const cognitoUser = await getCurrentUser();
+          setUser({ email: cognitoUser.signInDetails?.loginId ?? email });
+          toast.success("Welcome back!");
+          return;
+        } catch {
+          // fall through to normal error handling
+        }
+      }
       const message =
         err instanceof Error ? err.message : "An unexpected error occurred";
       setError(message);
@@ -103,9 +114,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       const result = await confirmSignIn({ challengeResponse: newPassword });
       if (result.isSignedIn) {
+        const cognitoUser = await getCurrentUser();
         setNeedsNewPassword(false);
-        setUser({ email: pendingEmailRef.current ?? "" });
+        setUser({ email: cognitoUser.signInDetails?.loginId ?? pendingEmailRef.current ?? "" });
         pendingEmailRef.current = null;
+        toast.success("Password updated. Welcome!");
       }
     } catch (err) {
       const message =
@@ -118,10 +131,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const handleLogout = useCallback(async () => {
     try {
       await signOut();
+    } catch {
+      toast.error("Sign out failed. Please try again.");
+    } finally {
       setUser(null);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to sign out";
-      toast.error(message);
+      setNeedsNewPassword(false);
+      pendingEmailRef.current = null;
     }
   }, []);
 
