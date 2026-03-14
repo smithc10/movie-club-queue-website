@@ -23,14 +23,14 @@ const MovieResultItem = memo(
       key={movie.id}
       value={`${movie.id}-${movie.title}`}
       onSelect={onSelect}
-      className="flex items-center gap-4 p-3 cursor-pointer rounded-lg data-[selected=true]:bg-blue-600/30 aria-selected:bg-blue-600/30 transition-colors"
+      className="flex items-center gap-4 p-3 cursor-pointer rounded-lg data-[selected=true]:bg-accent aria-selected:bg-accent transition-colors"
     >
       <MoviePoster path={movie.poster_path} title={movie.title} />
       <div className="flex-1 min-w-0">
-        <h3 className="font-medium text-white truncate text-base">
+        <h3 className="font-medium text-foreground truncate text-base">
           {movie.title}
         </h3>
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-muted-foreground">
           {getMovieYear(movie.release_date)}
         </p>
       </div>
@@ -111,7 +111,7 @@ export default function MovieSearch({ onAddToSchedule }: MovieSearchProps) {
   return (
     <>
       <Command
-        className="bg-gray-800 rounded-2xl shadow-2xl border border-gray-700/50 [&_[cmdk-input-wrapper]]:border-none"
+        className="bg-card rounded-2xl shadow-md border border-border [&_[cmdk-input-wrapper]]:border-none"
         shouldFilter={false}
       >
         <div className="relative">
@@ -119,20 +119,20 @@ export default function MovieSearch({ onAddToSchedule }: MovieSearchProps) {
             placeholder="What are we watching next week?"
             value={searchQuery}
             onValueChange={setSearchQuery}
-            className="text-xl pl-0 pr-4 py-6 h-auto border-none text-white placeholder:text-gray-500 font-light"
+            className="text-xl pl-0 pr-4 py-6 h-auto border-none text-foreground placeholder:text-muted-foreground font-light"
           />
 
           {loading && (
             <div className="absolute right-5 top-1/2 -translate-y-1/2">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500" />
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-foreground" />
             </div>
           )}
         </div>
 
         {(movies.length > 0 || showEmptyMessage) && (
-          <CommandList className="mt-3 bg-gray-800 border border-gray-700/50 rounded-2xl shadow-2xl max-h-96 overflow-y-auto will-change-scroll [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
+          <CommandList className="mt-3 bg-card border border-border rounded-2xl shadow-md max-h-96 overflow-y-auto will-change-scroll [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-border [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
             {showEmptyMessage && movies.length === 0 && (
-              <CommandEmpty className="py-6 text-center text-gray-400 text-base">
+              <CommandEmpty className="py-6 text-center text-muted-foreground text-base">
                 No movies found. Try a different search.
               </CommandEmpty>
             )}
@@ -152,7 +152,7 @@ export default function MovieSearch({ onAddToSchedule }: MovieSearchProps) {
       </Command>
 
       {error && (
-        <div className="mt-4 bg-red-900/20 backdrop-blur-sm border border-red-500/50 text-red-300 px-4 py-3 rounded-xl text-sm shadow-lg">
+        <div className="mt-4 bg-destructive/10 border border-destructive/20 text-destructive px-4 py-3 rounded-xl text-sm shadow-lg">
           {error}
         </div>
       )}
