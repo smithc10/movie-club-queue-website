@@ -9,10 +9,12 @@ import { movieToScheduleEntry } from "@/lib/movieUtils";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
-import { ExitIcon } from "@radix-ui/react-icons";
+import { ExitIcon, SunIcon, MoonIcon } from "@radix-ui/react-icons";
+import { useTheme } from "@/hooks/useTheme";
 
 function App() {
   const { isLoggedIn, user, isLoading, handleLogout } = useAuthContext();
+  const { theme, toggleTheme } = useTheme();
   const [schedule, setSchedule] = useState<ScheduleEntry[]>([]);
 
   const handleAddToSchedule = useCallback((movie: Movie) => {
@@ -47,8 +49,8 @@ function App() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 flex items-center justify-center">
-        <div className="text-gray-400 text-lg">Loading...</div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-muted-foreground text-lg">Loading...</div>
       </div>
     );
   }
@@ -63,19 +65,28 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       <Toaster />
 
-      <header className="py-8 max-w-4xl mx-auto px-6 w-full">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-white">Movie Club Schedule</h1>
+      <header className="bg-[var(--color-header)] py-6 px-6 shadow-lg">
+        <div className="max-w-4xl mx-auto flex items-center justify-between">
+          <h1 className="text-3xl font-bold text-[var(--color-header-foreground)]">Movie Club Schedule</h1>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-400">{user?.email}</span>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              className="text-[var(--color-header-muted)] hover:text-[var(--color-header-foreground)] hover:bg-white/10 h-8 w-8"
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {theme === "dark" ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
+            </Button>
+            <span className="text-sm text-[var(--color-header-muted)]">{user?.email}</span>
             <Button
               variant="ghost"
               size="sm"
               onClick={handleLogout}
-              className="text-gray-400 hover:text-white"
+              className="text-[var(--color-header-muted)] hover:text-[var(--color-header-foreground)] hover:bg-white/10"
             >
               <ExitIcon className="h-4 w-4 mr-2" />
               Sign out
@@ -84,17 +95,17 @@ function App() {
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col items-center px-6 pb-12">
+      <main className="flex-1 flex flex-col items-center px-6 pt-10 pb-12">
         <div className="w-full max-w-3xl space-y-12">
           <MovieSearch onAddToSchedule={handleAddToSchedule} />
 
           {schedule.length > 0 && (
-            <section className="bg-gray-900/60 backdrop-blur-sm rounded-2xl border border-gray-800 p-8 shadow-2xl">
+            <section className="bg-card rounded-2xl border border-border p-8 shadow-md">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-semibold text-white">
+                <h2 className="text-2xl font-bold text-foreground">
                   Upcoming Schedule
                 </h2>
-                <span className="text-sm text-gray-400 bg-gray-800/80 px-4 py-2 rounded-full border border-gray-700">
+                <span className="text-sm text-muted-foreground bg-secondary px-4 py-2 rounded-full border border-border">
                   {schedule.length} {schedule.length === 1 ? "movie" : "movies"}
                 </span>
               </div>
