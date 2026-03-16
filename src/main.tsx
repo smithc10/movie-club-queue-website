@@ -4,6 +4,7 @@ import { Amplify } from "aws-amplify";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "@/components/ErrorFallback";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import "./index.css";
 import App from "./App.tsx";
 
@@ -30,9 +31,11 @@ Amplify.configure({
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   </StrictMode>,
 );

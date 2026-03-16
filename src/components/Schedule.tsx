@@ -38,22 +38,22 @@ const ScheduleItem = memo(({
     onDrop={onDrop}
     className={`
       flex items-center gap-4 p-4 transition-all cursor-move
-      ${isDragging ? "opacity-50 border-blue-500" : "border-gray-700"}
-      ${isDropTarget ? "bg-blue-900/20 border-blue-500" : "bg-gray-800/50"}
-      hover:bg-gray-700/50 hover:border-gray-600
+      ${isDragging ? "opacity-50 border-foreground" : "border-border"}
+      ${isDropTarget ? "bg-accent border-foreground" : "bg-card"}
+      hover:bg-accent/50 hover:border-border
     `}
   >
-    <div className="text-gray-500 font-mono text-sm w-8 text-center shrink-0">
+    <div className="text-muted-foreground font-mono text-sm w-8 text-center shrink-0">
       #{entry.order}
     </div>
 
     <MoviePoster path={entry.poster_path} title={entry.title} />
 
     <div className="flex-1 min-w-0">
-      <h3 className="font-medium text-white truncate text-sm mb-1">
+      <h3 className="font-medium text-foreground truncate text-sm mb-1">
         {entry.title}
       </h3>
-      <p className="text-xs text-gray-400">
+      <p className="text-xs text-muted-foreground">
         {getMovieYear(entry.release_date)}
       </p>
     </div>
@@ -106,7 +106,7 @@ export default function Schedule({
 
   if (schedule.length === 0) {
     return (
-      <Card className="text-center py-12 text-gray-400 bg-gray-800/30 border-2 border-dashed border-gray-700">
+      <Card className="text-center py-12 text-muted-foreground bg-secondary/30 border-2 border-dashed border-border">
         <p className="text-lg mb-2">No movies scheduled</p>
         <p className="text-sm">Search and add movies to your schedule</p>
       </Card>

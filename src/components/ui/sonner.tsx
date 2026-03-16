@@ -1,29 +1,26 @@
-import { Toaster as Sonner } from "sonner"
+import { Toaster as Sonner } from "sonner";
 
-type ToasterProps = React.ComponentProps<typeof Sonner>
+type ToasterProps = React.ComponentProps<typeof Sonner>;
 
 const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
-      theme="dark"
-      position="top-right"
+      position="top-center"
       className="toaster group"
       toastOptions={{
         classNames: {
           toast:
-            "group toast group-[.toaster]:bg-gray-800 group-[.toaster]:text-white group-[.toaster]:border-gray-700 group-[.toaster]:shadow-lg",
-          description: "group-[.toast]:text-gray-400",
-          actionButton:
-            "group-[.toast]:bg-blue-600 group-[.toast]:text-white",
+            "group toast group-[.toaster]:bg-card group-[.toaster]:text-card-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg",
+          description: "group-[.toast]:text-muted-foreground",
+          actionButton: "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
           cancelButton:
-            "group-[.toast]:bg-gray-700 group-[.toast]:text-gray-300",
-          success:
-            "!bg-green-900/80 !border-green-700 !text-green-50",
+            "group-[.toast]:bg-secondary group-[.toast]:text-secondary-foreground",
+          success: "!bg-green-900/80 !border-green-700 !text-green-50",
         },
       }}
       {...props}
     />
-  )
-}
+  );
+};
 
-export { Toaster }
+export { Toaster };

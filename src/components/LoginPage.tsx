@@ -11,6 +11,8 @@ import {
 } from "@radix-ui/react-icons";
 import { SunIcon, MoonIcon } from "@radix-ui/react-icons";
 import { toast } from "sonner";
+import { useThemeContext } from "@/contexts/ThemeContext";
+
 type ForgotStep = null | "request" | "confirm";
 
 export default function LoginPage() {
@@ -27,6 +29,8 @@ export default function LoginPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { theme, toggleTheme } = useThemeContext();
+
   const [forgotStep, setForgotStep] = useState<ForgotStep>(null);
   const [forgotEmail, setForgotEmail] = useState("");
   const [resetCode, setResetCode] = useState("");
@@ -124,9 +128,24 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 flex items-center justify-center px-6">
+    <div className="min-h-screen bg-background flex items-center justify-center px-6 relative">
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={toggleTheme}
+        className="absolute top-4 right-4 text-muted-foreground hover:text-foreground h-8 w-8"
+        aria-label={
+          theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+        }
+      >
+        {theme === "dark" ? (
+          <SunIcon className="h-4 w-4" />
+        ) : (
+          <MoonIcon className="h-4 w-4" />
+        )}
+      </Button>
       <div className="w-full max-w-md">
-
+        <div className="bg-card rounded-2xl border border-border p-8 shadow-2xl">
           {/* Back button for forgot password steps */}
           {forgotStep && (
             <button
@@ -143,7 +162,7 @@ export default function LoginPage() {
           )}
 
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">
+            <h1 className="text-3xl font-bold text-foreground uppercase tracking-wide mb-2">
               {getHeading()}
             </h1>
             <p className="text-muted-foreground">{getSubtext()}</p>
@@ -246,7 +265,9 @@ export default function LoginPage() {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
                   >
                     {showPassword ? (
                       <EyeClosedIcon className="h-5 w-5" />
@@ -257,7 +278,10 @@ export default function LoginPage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="resetConfirmPassword" className="text-foreground">
+                <Label
+                  htmlFor="resetConfirmPassword"
+                  className="text-foreground"
+                >
                   Confirm New Password
                 </Label>
                 <div className="relative">
@@ -279,7 +303,9 @@ export default function LoginPage() {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
                   >
                     {showPassword ? (
                       <EyeClosedIcon className="h-5 w-5" />
@@ -331,7 +357,9 @@ export default function LoginPage() {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
                   >
                     {showPassword ? (
                       <EyeClosedIcon className="h-5 w-5" />
@@ -364,7 +392,9 @@ export default function LoginPage() {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
                   >
                     {showPassword ? (
                       <EyeClosedIcon className="h-5 w-5" />
@@ -434,7 +464,9 @@ export default function LoginPage() {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
                   >
                     {showPassword ? (
                       <EyeClosedIcon className="h-5 w-5" />
@@ -466,7 +498,6 @@ export default function LoginPage() {
               </div>
             </form>
           )}
-
         </div>
       </div>
     </div>

@@ -23,7 +23,7 @@ export function MoviePoster({
     />
   ) : (
     <div
-      className={`${className} bg-gray-700 rounded flex items-center justify-center text-gray-500 text-xs`}
+      className={`${className} bg-secondary rounded flex items-center justify-center text-muted-foreground text-xs`}
     >
       🎬
     </div>

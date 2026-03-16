@@ -1,37 +1,83 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  /* Dark theme colors */
-  --color-background: #0a0a0a;
-  --color-foreground: #fafafa;
-  --color-card: #1a1a1a;
-  --color-card-foreground: #fafafa;
-  --color-popover: #0a0a0a;
-  --color-popover-foreground: #fafafa;
-  --color-primary: #3b82f6;
-  --color-primary-foreground: #f8fafc;
-  --color-secondary: #1e293b;
-  --color-secondary-foreground: #f1f5f9;
-  --color-muted: #1e293b;
-  --color-muted-foreground: #94a3b8;
-  --color-accent: #1e293b;
-  --color-accent-foreground: #f1f5f9;
-  --color-destructive: #7f1d1d;
-  --color-destructive-foreground: #fef2f2;
-  --color-border: #27272a;
-  --color-input: #27272a;
-  --color-ring: #3b82f6;
+  /* Typography */
+  --font-sans: "Figtree", sans-serif;
+
+  /* Brand colors */
+  --color-brand-red: #E3394C;
+  --color-brand-blue: #164180;
+  --color-brand-coral: #E55C6E;
+  --color-brand-cream: #F1EEE9;
+  --color-brand-silver: #BABBC5;
+
+  /* Light theme (default) */
+  --color-background: #ffffff;
+  --color-foreground: #2a2a2a;
+  --color-card: #F6F6F6;
+  --color-card-foreground: #2a2a2a;
+  --color-popover: #F6F6F6;
+  --color-popover-foreground: #2a2a2a;
+  --color-primary: #E55C6E;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #BABBC5;
+  --color-secondary-foreground: #2a2a2a;
+  --color-muted: #BABBC5;
+  --color-muted-foreground: #6b6b6b;
+  --color-accent: #E8E4DE;
+  --color-accent-foreground: #2a2a2a;
+  --color-destructive: #dc2626;
+  --color-destructive-foreground: #ffffff;
+  --color-border: #d5d0c9;
+  --color-input: #d5d0c9;
+  --color-ring: #E55C6E;
+
+  /* Header */
+  --color-header: #F6F6F6;
+  --color-header-foreground: #2a2a2a;
+  --color-header-muted: rgba(42, 42, 42, 0.5);
 
   --radius-lg: 0.5rem;
   --radius-md: calc(0.5rem - 2px);
   --radius-sm: calc(0.5rem - 4px);
 }
 
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+/* Dark theme - inverted light */
+.dark {
+  --color-background: #1a1a1a;
+  --color-foreground: #ffffff;
+  --color-card: #242424;
+  --color-card-foreground: #ffffff;
+  --color-popover: #242424;
+  --color-popover-foreground: #ffffff;
+  --color-primary: #E55C6E;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #333333;
+  --color-secondary-foreground: #ffffff;
+  --color-muted: #333333;
+  --color-muted-foreground: rgba(255, 255, 255, 0.5);
+  --color-accent: #2e2e2e;
+  --color-accent-foreground: #ffffff;
+  --color-destructive: #dc2626;
+  --color-destructive-foreground: #ffffff;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-input: rgba(255, 255, 255, 0.1);
+  --color-ring: #E55C6E;
+
+  --color-header: #242424;
+  --color-header-foreground: #ffffff;
+  --color-header-muted: rgba(255, 255, 255, 0.5);
+
   color-scheme: dark;
+}
+
+:root {
+  font-family: "Figtree", sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  color-scheme: light;
   background-color: var(--color-background);
   color: var(--color-foreground);
 
