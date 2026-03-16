@@ -11,7 +11,7 @@ import {
 } from "@radix-ui/react-icons";
 import { SunIcon, MoonIcon } from "@radix-ui/react-icons";
 import { toast } from "sonner";
-import { useTheme } from "@/hooks/useTheme";
+import { useThemeContext } from "@/contexts/ThemeContext";
 
 type ForgotStep = null | "request" | "confirm";
 
@@ -29,7 +29,7 @@ export default function LoginPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme } = useThemeContext();
 
   const [forgotStep, setForgotStep] = useState<ForgotStep>(null);
   const [forgotEmail, setForgotEmail] = useState("");

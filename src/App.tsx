@@ -10,11 +10,11 @@ import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { ExitIcon, SunIcon, MoonIcon } from "@radix-ui/react-icons";
-import { useTheme } from "@/hooks/useTheme";
+import { useThemeContext } from "@/contexts/ThemeContext";
 
 function App() {
   const { isLoggedIn, user, isLoading, handleLogout } = useAuthContext();
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme } = useThemeContext();
   const [schedule, setSchedule] = useState<ScheduleEntry[]>([]);
 
   const handleAddToSchedule = useCallback((movie: Movie) => {
@@ -70,13 +70,13 @@ function App() {
 
       <header className="bg-[var(--color-header)] py-6 px-6 shadow-lg">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-[var(--color-header-foreground)]">Movie Club Schedule</h1>
+          <h1 className="text-3xl font-bold uppercase tracking-wide text-[var(--color-header-foreground)]">Movie Club Schedule</h1>
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
               size="icon"
               onClick={toggleTheme}
-              className="text-[var(--color-header-muted)] hover:text-[var(--color-header-foreground)] hover:bg-white/10 h-8 w-8"
+              className="text-[var(--color-header-muted)] hover:text-[var(--color-header-foreground)] hover:bg-black/10 h-8 w-8"
               aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
             >
               {theme === "dark" ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
@@ -86,7 +86,7 @@ function App() {
               variant="ghost"
               size="sm"
               onClick={handleLogout}
-              className="text-[var(--color-header-muted)] hover:text-[var(--color-header-foreground)] hover:bg-white/10"
+              className="text-[var(--color-header-muted)] hover:text-[var(--color-header-foreground)] hover:bg-black/10"
             >
               <ExitIcon className="h-4 w-4 mr-2" />
               Sign out

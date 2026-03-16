@@ -40,7 +40,7 @@ const ScheduleItem = memo(({
       flex items-center gap-4 p-4 transition-all cursor-move
       ${isDragging ? "opacity-50 border-foreground" : "border-border"}
       ${isDropTarget ? "bg-accent border-foreground" : "bg-card"}
-      hover:bg-card hover:border-border
+      hover:bg-accent hover:border-border
     `}
   >
     <div className="text-muted-foreground font-mono text-sm w-8 text-center shrink-0">

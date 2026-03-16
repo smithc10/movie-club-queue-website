@@ -93,12 +93,6 @@ body {
   min-height: 100vh;
 }
 
-header h1 {
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
 #root {
   width: 100%;
 }
