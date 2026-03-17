@@ -9,6 +9,10 @@ permissions:
   id-token: write  # Required for OIDC token request
   contents: read
 
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
 jobs:
   deploy:
     name: Build & Deploy to S3
@@ -40,9 +44,15 @@ jobs:
 
       - name: Sync to S3
         run: |
+          # Hashed assets (dist/assets/) get a 1-year immutable cache — filenames change on every build
+          aws s3 sync dist/assets/ s3://${{ secrets.S3_BUCKET_NAME }}/assets/ \
+            --cache-control "public, max-age=31536000, immutable"
+
+          # Non-hashed files (e.g. public/ copies like favicon) must not be cached long-term
           aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }} \
             --delete \
-            --cache-control "public, max-age=31536000, immutable" \
+            --cache-control "no-cache, no-store, must-revalidate" \
+            --exclude "assets/*" \
             --exclude "index.html"
 
           # index.html must not be cached — browsers need the latest entry point
