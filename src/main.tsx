@@ -28,7 +28,7 @@ if (!configError) {
 }
 
 function Root() {
-  if (import.meta.env.DEV && import.meta.env.VITE_FORCE_ERROR_BOUNDARY) {
+  if (import.meta.env.DEV && import.meta.env.VITE_FORCE_ERROR_BOUNDARY === "true") {
     throw new Error("Oops! Something went wrong on our end");
   }
   if (configError) {
@@ -43,10 +43,10 @@ function Root() {
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ThemeProvider>
-      <ErrorBoundary FallbackComponent={ErrorFallback}>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <ThemeProvider>
         <Root />
-      </ErrorBoundary>
-    </ThemeProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   </StrictMode>,
 );

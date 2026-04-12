@@ -12,10 +12,9 @@ function StaticCanvas() {
 
     let animationId: number;
 
+    let imageData = ctx.createImageData(canvas.width, canvas.height);
+
     const draw = () => {
-      const w = canvas.width;
-      const h = canvas.height;
-      const imageData = ctx.createImageData(w, h);
       const data = imageData.data;
       for (let i = 0; i < data.length; i += 4) {
         const v = Math.random() * 255;
@@ -31,6 +30,7 @@ function StaticCanvas() {
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      imageData = ctx.createImageData(canvas.width, canvas.height);
     };
 
     resize();
@@ -54,7 +54,13 @@ export function ErrorFallback({ error }: FallbackProps) {
         <p className="text-muted-foreground mb-2">
           {error.message || "An unexpected error occurred"}
         </p>
-        <p className="text-muted-foreground">Please try again later</p>
+        <p className="text-muted-foreground mb-6">Please try again later</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="px-4 py-2 rounded-lg border border-primary bg-primary text-primary-foreground hover:opacity-80 transition-opacity text-sm"
+        >
+          Reload page
+        </button>
       </div>
     </div>
   );
