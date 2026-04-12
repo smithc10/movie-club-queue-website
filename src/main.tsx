@@ -11,30 +11,41 @@ import App from "./App.tsx";
 const userPoolId = import.meta.env.VITE_COGNITO_USER_POOL_ID;
 const userPoolClientId = import.meta.env.VITE_COGNITO_CLIENT_ID;
 
-if (!userPoolId) {
-  throw new Error("Missing required environment variable: VITE_COGNITO_USER_POOL_ID");
-}
+const configError =
+  !userPoolId ? "Missing required environment variable: VITE_COGNITO_USER_POOL_ID" :
+  !userPoolClientId ? "Missing required environment variable: VITE_COGNITO_CLIENT_ID" :
+  null;
 
-if (!userPoolClientId) {
-  throw new Error("Missing required environment variable: VITE_COGNITO_CLIENT_ID");
-}
-
-Amplify.configure({
-  Auth: {
-    Cognito: {
-      userPoolId,
-      userPoolClientId,
+if (!configError) {
+  Amplify.configure({
+    Auth: {
+      Cognito: {
+        userPoolId: userPoolId!,
+        userPoolClientId: userPoolClientId!,
+      },
     },
-  },
-});
+  });
+}
+
+function Root() {
+  if (import.meta.env.DEV && import.meta.env.VITE_FORCE_ERROR_BOUNDARY === "true") {
+    throw new Error("Oops! Something went wrong on our end");
+  }
+  if (configError) {
+    throw new Error(configError);
+  }
+  return (
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  );
+}
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <ThemeProvider>
-        <AuthProvider>
-          <App />
-        </AuthProvider>
+        <Root />
       </ThemeProvider>
     </ErrorBoundary>
   </StrictMode>,
