@@ -7,9 +7,8 @@
   --font-sans: "Figtree", sans-serif;
 
   /* Brand colors */
-  --color-brand-red: #E3394C;
+  --color-brand-gold: #C5A26E;
   --color-brand-blue: #164180;
-  --color-brand-coral: #E55C6E;
   --color-brand-cream: #F1EEE9;
   --color-brand-silver: #BABBC5;
 
@@ -20,7 +19,7 @@
   --color-card-foreground: #2a2a2a;
   --color-popover: #F6F6F6;
   --color-popover-foreground: #2a2a2a;
-  --color-primary: #E55C6E;
+  --color-primary: #C5A26E;
   --color-primary-foreground: #ffffff;
   --color-secondary: #BABBC5;
   --color-secondary-foreground: #2a2a2a;
@@ -32,7 +31,7 @@
   --color-destructive-foreground: #ffffff;
   --color-border: #d5d0c9;
   --color-input: #d5d0c9;
-  --color-ring: #E55C6E;
+  --color-ring: #C5A26E;
 
   /* Header */
   --color-header: #F6F6F6;
@@ -52,7 +51,7 @@
   --color-card-foreground: #ffffff;
   --color-popover: #242424;
   --color-popover-foreground: #ffffff;
-  --color-primary: #E55C6E;
+  --color-primary: #C5A26E;
   --color-primary-foreground: #ffffff;
   --color-secondary: #333333;
   --color-secondary-foreground: #ffffff;
@@ -64,7 +63,7 @@
   --color-destructive-foreground: #ffffff;
   --color-border: rgba(255, 255, 255, 0.1);
   --color-input: rgba(255, 255, 255, 0.1);
-  --color-ring: #E55C6E;
+  --color-ring: #C5A26E;
 
   --color-header: #242424;
   --color-header-foreground: #ffffff;
